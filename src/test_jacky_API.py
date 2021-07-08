@@ -15,7 +15,7 @@ username = "apikey"
 "Work Package Demo"
 
 expected_work_package_subject = "Task"
-new_work_package_subject = "*** api task 7 ***"
+new_work_package_subject = " api task 7 "
 expected_work_package_description = "_**My Task 1**_"
 projectNameExpected = "TestProject-1"
 descriptionExpected= "This is my first project after update"
@@ -104,53 +104,26 @@ def test_patch():
 
     # TEST-007  - Create Work Package:
 def test_create_new_work_package():
-    payload = {"subject": new_work_package_subject,
-                "_links": {
-            "type": {
-                "href": "/api/v3/types/1"
-            },
-            "project": {
-                "href":"/api/v3/projects/" + str(expected_work_package_id)
-
-            }
-        }
-    }
-    op_response = requests.post('http://localhost:8080/api/v3/work_packages', auth=(username, password), json=payload)
-    assert new_work_package_subject == op_response.json()["subject"]
+    payload = { "subject": "My Package" }
+    op_response = requests.post('http://localhost:8080/api/v3/projects/1/work_packages', auth=(username, password), json=payload)
+    assert 'My Package' == op_response.json()["subject"]
     print(new_work_package_subject,"\n",op_response.text)
 
-
+    # + str(expected_work_package_id)
 
 
     # TEST-008  -
 def test_delete_work_package_id():
-    # creating project
+    payload = { "subject": "My Package" }
+    op_response = requests.post('http://localhost:8080/api/v3/projects/1/work_packages', auth=(username, password), json=payload)
+    assert op_response.status_code == 201
+    package_id = op_response.json()['id']
 
-
-    payload = {"subject": new_work_package_subject,
-                "_links": {
-            "type": {
-                "href": "/api/v3/types/1"
-            },
-            "project": {
-                "href":"/api/v3/projects/" + str(expected_work_package_id)
-
-            }
-        }
+    headers = {
+        "Content-Type": "application/json"
     }
-    op_response = requests.post('http://localhost:8080/api/v3/work_packages', auth=(username, password), json=payload)
-    assert new_work_package_subject == op_response.json()["subject"]
-    assert  200 == op_response.status_code,f"The status code after creating work package should be {expected_status_code_creating}"
-    id_project_to_delete = op_response.json()["id"]
+    op_response = requests.delete(f'http://localhost:8080/api/v3/work_packages/{package_id}', auth=(username, password), headers=headers)
+    assert op_response.status_code == 204
 
-#     # delete project
-    expected_status_code_deleting = 204
-    time.sleep(10)
-    op_response = requests.delete('http://localhost:8080/api/v3/work_packages/'+id_project_to_delete, auth=(username, password), json=payload)
-    assert 204 == expected_status_code_deleting,f"The status code after deleting work package should be {expected_status_code_deleting}"
-    time.sleep(5)
-
-#     # getting project after delete
-
-    op_response = requests.get(f'http://localhost:8080/api/v3/work_packages/38', auth=(username, password))
+    op_response = requests.get(f'http://localhost:8080/api/v3/work_packages/{package_id}', auth=(username, password), headers=headers)
     assert op_response.status_code == 404
