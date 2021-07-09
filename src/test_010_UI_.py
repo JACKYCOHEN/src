@@ -12,7 +12,6 @@ driver = webdriver.Chrome()
 def find_by_class(d, name):
     return d.find_element_by_class_name(name)
 
-
 # Step # 1 - open OpenProject and sign in :
 # -----------------------------------------
 def test_login_to_open_project():
