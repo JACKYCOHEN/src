@@ -13,8 +13,10 @@ text_1 = "My #1 Task!!!"
 text_2 = "This is my first UI task in Open Project (-: "
 text3 = str("This is the first test project")
 
+
 def find_by_class(d, name):
     return d.find_element_by_class_name(name)
+
 
 # Step # 1 - Login to OpenProject :
 # -----------------------------------------

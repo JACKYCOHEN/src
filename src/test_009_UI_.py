@@ -1,6 +1,5 @@
 import time
 from selenium import webdriver
-from selenium.webdriver.remote.webelement import WebElement
 
 sign_in_name = 'admin'
 sign_in_user = 'j_cohen_99@yahoo.com'
@@ -13,18 +12,14 @@ project_name = "Hello World"
 def find_by_class(d, name):
     return d.find_element_by_class_name(name)
 
+# Step 1 -Login to OpenProject:
 
-driver = webdriver.Chrome()
-
-
-# Step 1 -  Login to OpenProject:
 
 def test_login_to_open_project():
     driver.get("http://localhost:8080/")
     time.sleep(3)
     driver.find_element_by_xpath('//*[@id="wrapper"]/header/div[3]/ul/li[3]/a/span').click()
     time.sleep(3)
-
 
     # enter user name
     driver.find_element_by_xpath('//*[@id="username-pulldown"]').send_keys(sign_in_name)
@@ -35,6 +30,7 @@ def test_login_to_open_project():
     time.sleep(1)
 
 # Step 2 - project page - Click on the "+" button and select "New project":
+
 
 def test_select_new_project():
     driver.find_element_by_xpath('//a[contains(@title,"Open quick add menu")]').click()
@@ -80,13 +76,12 @@ def test_status_on_track():
 
     driver.find_element_by_xpath('//*[@id="formly_9_selectProjectStatusInput__links.status_4"]/div').click()
 
-    #driver.find_element_by_xpath('//*[@id="formly_9_selectProjectStatusInput__links.status_4"]/div/div/div[3]/input').click()
+#   driver.find_element_by_xpath('//*[@id="formly_9_selectProjectStatusInput__links.status_4"]/div/div/div[3]/input').click()
     time.sleep(2)
     driver.find_element_by_class_name("-on-track").click()
 
-
-
 # Step 8 - click On "save” button
+
 
 def test_click_save_button():
     time.sleep(2)
@@ -96,7 +91,7 @@ def test_click_save_button():
 
 # Step 9 - Verify the project name
 def test_verify_project_name():
-    #project_name = "project_name"
+#   project_name = "project_name"
     element = driver.find_element_by_xpath('//*[@id="projects-menu"]/span')
     time.sleep(2)
     assert project_name == element.text

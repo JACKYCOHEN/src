@@ -46,8 +46,6 @@ def test_get_project_by_id():
     print("The exist project description is :", op_response.json()["description"]["raw"])
 
 
-
-
 def test_Update_project_by_id():
     # TEST-002  - Update(patch) Project
     payload = {'description': {'raw': new_proj_description}}
@@ -86,7 +84,7 @@ def test_create_and_delete_Project():
     assert statusCode_POST == op_response.status_code, ("Get Request Failed, status code:", op_response.status_code)
     assert 'TestProject_004' == op_response.json()["name"]
 
-    message = f'The new project name is: {op_response.json()["name"]}\nCreate project succeeded - the status code is: {op_response.status_code}'
+    message = f'The new project name is: {op_response.json()["name"]}\nCreate project succeeded - the status code is: {op_response.status_code} '
     print(message)
     id_project = op_response.json()["id"]
     print(id_project)
@@ -112,18 +110,20 @@ def test_get():
     assert response.json()["description"]["raw"] == exist_task_description, (
     "Description invalid:", response.json()["description"]["raw"])
 
+
 def test_update_Work_Package_description():
     # TEST-006  - Update(patch) Work Package description:
     response = requests.get(f'http://localhost:8080/api/v3/work_packages/{expected_work_package_id}',
                             auth=(username, password))
-    current_lockVersion = str(response.json()["lockVersion"])
-    payload = {"lockVersion": current_lockVersion, "description": {"raw": updated_task_description}}
+    current_lockversion = str(response.json()["lockVersion"])
+    payload = {"lockVersion": current_lockversion, "description": {"raw": updated_task_description}}
     op_response = requests.patch(f'http://localhost:8080/api/v3/work_packages/{expected_work_package_id}',
                                  auth=(username, password), json=payload)
     assert updated_task_description == op_response.json()["description"]["raw"]
     print("The updated_task_description is:", op_response.json()["description"]["raw"])
 
-    # TEST-007  - Create Work Package:
+
+ #  TEST-007  - Create Work Package:
 def test_create_new_work_package():
     # TEST-007  - Create Work Package:
     payload = {"subject": new_work_package1}
@@ -150,11 +150,11 @@ def test_delete_work_package_id():
     op_response = requests.delete(f'http://localhost:8080/api/v3/work_packages/{package_id}', auth=(username, password),
                                   headers=headers)
     assert op_response.status_code == statusCode_DELETE
-    print("Task successfully Deleted - the status code is :", op_response.status_code )
+    print("Task successfully Deleted - the status code is :", op_response.status_code)
 
     op_response = requests.get(f'http://localhost:8080/api/v3/work_packages/{package_id}', auth=(username, password),
                                headers=headers)
 
     assert op_response.status_code == statusCode_NOT_FOUND
-    print("Success - new_work_package2 does not exist any more !!! The status code is : ",op_response.status_code )
+    print("Success - new_work_package2 does not exist any more !!! The status code is : ", op_response.status_code)
     print("\n TEST api has finished - All steps passed : great job!!!")
