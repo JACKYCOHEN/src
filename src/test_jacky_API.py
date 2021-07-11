@@ -1,7 +1,7 @@
 import time
 import requests
-import username as username
-import password as password
+# import username as username
+# import password as password
 
 password = "900ceb67afcc3984e811e29889807fca496e37e1b9e46f75fc8015ab2ed22826"
 username = "apikey"
@@ -14,10 +14,13 @@ statusCode_DELETE = 204
 statusCode_NOT_FOUND = 404
 expected_status_code_creating = 201
 
+proj_step1_id = 102
 project_id = 77
 work_package_ID = 73
 
 expected_work_package_id = 5
+step_1_project_name = "TestProject_1"
+step_1_proj_desc = "This is the first test project"
 
 project_Name_Expected = "TestProject1"
 exist_proj_description = "This is the first test project"
@@ -29,20 +32,20 @@ exist_work_package_description = "My Task 1"
 new_work_package1 = "Task 007"
 new_work_package2 = "Task 008"
 
-# expected_work_package_subject = "Task"
-# new_work_package_subject = " api task 7 "
-# Project_description = "This is the first test project"
-
 expected_identifier = "testproject-name"
 
 
 def test_get_project_by_id():
     # TEST-001:Get Project by ID
-    op_response = requests.get(f'http://localhost:8080/api/v3/projects/{project_id}', auth=(username, password))
+    op_response = requests.get(f'http://localhost:8080/api/v3/projects/{proj_step1_id}', auth=(username, password))
     assert op_response.status_code == statusCode_GET, ("Get Request Failed, status code:", op_response.status_code)
-    assert op_response.json()["name"] == project_Name_Expected, ("Project name invalid:", op_response.json()["name"])
-    assert op_response.json()["description"]["raw"] == exist_proj_description, (
+    assert op_response.json()["name"] == step_1_project_name, ("Project name invalid:", op_response.json()["name"])
+    assert op_response.json()["description"]["raw"] == step_1_proj_desc, (
     "Description invalid:", op_response.json()["description"]["raw"])
+    print("The exist project name is :", op_response.json()["name"])
+    print("The exist project description is :", op_response.json()["description"]["raw"])
+
+
 
 
 def test_Update_project_by_id():
